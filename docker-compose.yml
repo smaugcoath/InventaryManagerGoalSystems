@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  webapi:
+    image: ${DOCKER_REGISTRY-}goalsystemswebapihost
+    container_name: goalsystems-webapi
+    build:
+        context: .
+        dockerfile: src/GoalSystems.WebApi.Host/Dockerfile
+    ports:
+        - "3340:80"
+        - "3341:443"
+
+  database:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+    container_name: goalsystems-database
+    environment:
+        SA_PASSWORD: "ContainerTestPassword"
+        ACCEPT_EULA: "Y"
+    ports:
+        - "1433:1433"
+    volumes:
+        - ./containers/mssql-server-linux-data:/var/opt/mssql/data
